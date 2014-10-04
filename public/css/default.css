@@ -1,0 +1,77 @@
+#scores {
+	padding: 20px;	
+}
+
+#newGame {
+	position: absolute;
+	top: 25px;
+	left: 500px;
+}
+
+#stack {
+	position: absolute;
+	width: 75px;
+	height: 100px;
+	border: 1px #00FF00 solid;
+	text-align: center;
+	font-size: 36px;
+}
+
+#discard {
+	position: absolute;
+	width: 75px;
+	height: 100px;
+	text-align: center;
+	font-size: 36px;
+}
+
+.foundation {
+	position: absolute;
+	width: 75px;
+	height: 100px;
+	border: 1px #FF0000 dashed;
+	text-align: center;
+	font-size: 36px;
+}
+
+.base {
+	position: absolute;
+	width: 75px;
+	height: 100px;
+	border: 1px #000000 dotted;
+	text-align: center;
+	font-size: 36px;
+}
+
+.card {
+	position: absolute;
+	width: 75px;
+	height: 100px;
+	border: 1px #000000 solid;
+	text-align: center;
+	font-size: 36px;
+}
+
+.card-front {
+	background-color: #FFFFFF;
+}
+
+.card-back {
+	background-color: #FF0000;
+}
+
+.hearts {
+	color: #FF0000;
+}
+
+.diamonds {
+	color: #FF0000;
+}
+
+.spades {
+	color: #000000;
+}
+
+.clubs {
+	color: #000000;
+}

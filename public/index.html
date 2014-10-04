@@ -1,0 +1,76 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Amphibian.com 2-Player Solitaire</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/default.css">
+</head>
+
+<body>
+
+  <div id="scores">
+    <div id="p1-score">Player 1: 0</div>
+    <div id="p2-score">Player 2: 0</div>
+  </div>
+
+  <div id="newGame">
+    <button id="newGameButton" type="button" class="btn btn-primary btn-lg">New Game</button>
+  </div>
+
+  <div id="table">
+
+    <div id="stack"   style="top: 100px; left: 25px;"></div>
+    <div id="discard" style="top: 100px; left: 125px; z-index: -1;"></div>
+
+    <div id="foundation-1" fnum="0" class="foundation" style="top: 100px; left: 325px;"></div>
+    <div id="foundation-2" fnum="1" class="foundation" style="top: 100px; left: 425px;"></div>
+    <div id="foundation-3" fnum="2" class="foundation" style="top: 100px; left: 525px;"></div>
+    <div id="foundation-4" fnum="3" class="foundation" style="top: 100px; left: 625px;"></div>
+
+    <div id="base-1" bnum="0" class="base" style="top: 225px; left: 25px;"></div>
+    <div id="base-2" bnum="1" class="base" style="top: 225px; left: 125px;"></div>
+    <div id="base-3" bnum="2" class="base" style="top: 225px; left: 225px;"></div>
+    <div id="base-4" bnum="3" class="base" style="top: 225px; left: 325px;"></div>
+    <div id="base-5" bnum="4" class="base" style="top: 225px; left: 425px;"></div>
+    <div id="base-6" bnum="5" class="base" style="top: 225px; left: 525px;"></div>
+    <div id="base-7" bnum="6" class="base" style="top: 225px; left: 625px;"></div>
+
+ 
+  </div>
+
+
+<div id="joinGameModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 id="joinTitle" class="modal-title">Join Game</h4>
+      </div>
+      <div class="modal-body">
+        
+        <div class="form-group">
+		    <label for="Player Name">Player Name</label>
+		    <input type="text" class="form-control" id="playerName" placeholder="player name">
+  		</div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button id="joinButton" type="button" class="btn btn-primary">Join</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+  
+</body>
+
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<script src="/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/main.js"></script>
+
+</html>
