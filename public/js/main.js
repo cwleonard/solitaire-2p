@@ -101,6 +101,11 @@ function resetStack() {
 	
 }
 
+function updateScore(data) {
+	
+	$('#p' + data.num + '-score').html(data.name + ": " + data.score);
+	
+}
 
 function fixZIndex(e, startAt) {
 	
@@ -447,8 +452,12 @@ function setupGame(data) {
 	}
 	
 	// connect via socket.io
-	
-    window.sckt = io.connect('http://localhost:3000');
+	var urlParts = window.location.href.split("/");
+	var cUrl = urlParts[0] + "//" + urlParts[2];
+	if (!window.location.port) {
+		cUrl += ':5000';
+	}
+    window.sckt = io.connect(cUrl);
     window.sckt.on("connect", function() {
     	window.sckt.emit('join', {
     		gameId: window.gameId,
@@ -484,6 +493,10 @@ function setupGame(data) {
 
     window.sckt.on("move_card_to_base", function(data) {
     	performCardToBaseMove(data);
+    });
+
+    window.sckt.on("score_point", function(data) {
+    	updateScore(data);
     });
 
 }

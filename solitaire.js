@@ -302,6 +302,24 @@ module.exports = function() {
 			return c;
 		};
 		
+		function addPoint(pid) {
+			if (players[pid]) {
+				var scorer = players[pid];
+				console.log('player ' + scorer.id + ' scored a point');
+				scorer.score++;
+				for (var p in players) {
+					var player = players[p];
+					if (player.socket) {
+						player.socket.emit("score_point", {
+							name: scorer.name,
+							num: scorer.num,
+							score: scorer.score
+						});
+					}
+				}
+			}
+		}
+		
 		this.isCardOnBase = function(cardId) {
 			return (cardMap[cardId].getLocationType() === BASE);
 		};
@@ -399,6 +417,7 @@ module.exports = function() {
 						targetId: targetId,
 						onBase: true
 					});
+					addPoint(pid);
 				}
 				return res;
 				
@@ -411,6 +430,7 @@ module.exports = function() {
 						targetId: targetId,
 						onBase: false
 					});
+					addPoint(pid);
 				}
 				return res;
 				
@@ -429,6 +449,7 @@ module.exports = function() {
 					moveId: cardId,
 					foundationNum: fn
 				});
+				addPoint(pid);
 			}
 			return res;
 		};
@@ -476,6 +497,7 @@ module.exports = function() {
 					moveId: cardId,
 					baseNum: bn
 				});
+				addPoint(pid);
 			}
 			return res;
 		};
