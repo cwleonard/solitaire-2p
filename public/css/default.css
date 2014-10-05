@@ -15,6 +15,9 @@
 	border: 1px #00FF00 solid;
 	text-align: center;
 	font-size: 36px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
 }
 
 #discard {
@@ -32,6 +35,9 @@
 	border: 1px #FF0000 dashed;
 	text-align: center;
 	font-size: 36px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
 }
 
 .base {
@@ -41,6 +47,15 @@
 	border: 1px #000000 dotted;
 	text-align: center;
 	font-size: 36px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
+}
+
+.dragging {
+	-webkit-box-shadow: 40px 40px 50px 0px rgba(0,0,0,0.5);
+	-moz-box-shadow: 40px 40px 50px 0px rgba(0,0,0,0.5);
+	box-shadow: 40px 40px 50px 0px rgba(0,0,0,0.5);	
 }
 
 .card {
@@ -50,6 +65,10 @@
 	border: 1px #000000 solid;
 	text-align: center;
 	font-size: 36px;
+	font-family: serif;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;	
 }
 
 .card-front {

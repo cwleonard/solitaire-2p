@@ -6,13 +6,8 @@ function performCardFlip(cdiv, cdata) {
 	$(cdiv).html(cdata.face);
 	cdiv.card = cdata;
 	
-	$(cdiv).draggable({
-		start: cardStart,
-		drag: cardDrag,
-		stop: cardStop
-	});
+	$(cdiv).draggable("option", "disabled", false);
 
-	
 }
 
 function performCardFlipOffStack(cdiv, cdata) {
@@ -33,12 +28,7 @@ function performCardFlipOffStack(cdiv, cdata) {
 
 	cdiv.card = cdata.card;
 
-	$(cdiv).draggable({
-		start: cardStart,
-		drag: cardDrag,
-		stop: cardStop
-	});
-	
+	$(cdiv).draggable("option", "disabled", false);
 	
 }
 
@@ -73,6 +63,8 @@ function performStackReset(data) {
 	for (var i = 0; i < data.length; i++) {
 		
 		var c = $('#' + data[i].id);
+		
+		$(c).draggable("option", "disabled", true);
 		
 		$(c).removeClass('card-font');
 		$(c).addClass('card-back');
@@ -190,6 +182,8 @@ function performCardToBaseMove(data) {
 
 function cardStop(event, ui) {
 	
+	$(this).removeClass('dragging');
+
 	var zStart = this.lastZ || 1;
 	
 	if (this.dropped) {
@@ -307,10 +301,14 @@ function cardStop(event, ui) {
 
 function animateCard(card, pos) {
 	
-	$(card).animate({
+	var crd = $(card);
+	crd.draggable("option", "disabled", true);
+	crd.animate({
 		left: pos.left,
 		top: pos.top
-	}, 500);
+	}, 500, function() {
+		crd.draggable("option", "disabled", false);
+	});
 	
 	if (card.onTop) {
 		pos.top += 25;
@@ -340,6 +338,7 @@ function cardStart(event, ui) {
 	this.returnPos = ui.offset;
 	this.lastZ = $(this).zIndex();
 	$(this).zIndex(999);
+	$(this).addClass('dragging');
 }
 
 function createCardDiv(card, parent) {
@@ -359,13 +358,12 @@ function createCardDiv(card, parent) {
 	
 	parent.append(c);
 
-	if (card.faceUp) {
-	    $(c).draggable({
-	    	start: cardStart,
-    		drag: cardDrag,
-    		stop: cardStop
-    	});
-	}
+	$(c).draggable({
+		start: cardStart,
+		drag: cardDrag,
+		stop: cardStop,
+		disabled: (!card.faceUp)
+	});
 	
     $(c).droppable({
     	accept: '.card',
@@ -385,14 +383,21 @@ function setupGame(data) {
 		var b = $('#base-' + (i+1));
 		var p = b.position();
 	
+		var lastCard = null;
 		for (var j = 0; j < s.length; j++) {
 		
 			var c = createCardDiv(s[j], $('#table'));
+			if (lastCard) {
+				lastCard.onTop = c;
+			}
+			c.cardUnder = lastCard;
 			$(c).css('left', p.left + 'px');
 			$(c).css('top', p.top + 'px');
 			$(c).zIndex(j+1);
 			
 			p.top += 25;
+			
+			lastCard = c;
 		
 		}
 	
