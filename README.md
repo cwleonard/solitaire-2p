@@ -1,4 +1,4 @@
-
+![2-Player Solitaire](img/s2p-screenshot.png)
 
 # Amphibian.com 2-Player Solitaire
 
@@ -18,7 +18,7 @@ The source code for this game is under the [Creative Commons Attribution-NonComm
 
 The table background image is "Pool Table" from [Subtle Patterns](http://subtlepatterns.com/pool-table/) and is licensed under the [Creative Commons Attribution-ShareAlike license] (http://creativecommons.org/licenses/by-sa/3.0/).
 
-The card background image is modified from "Climpek" by [Wassim](http://www.blugraphic.com/) as found on [Subtle Patterns](http://subtlepatterns.com/pool-table/). It is licensed under the [Creative Commons Attribution-ShareAlike license] (http://creativecommons.org/licenses/by-sa/3.0/).
+The card background image is modified from "Climpek" by [Wassim](http://www.blugraphic.com/) as found on [Subtle Patterns](http://subtlepatterns.com/climpek/). It is licensed under the [Creative Commons Attribution-ShareAlike license] (http://creativecommons.org/licenses/by-sa/3.0/).
 
 ### Tools
 
