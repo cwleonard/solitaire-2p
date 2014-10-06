@@ -1,4 +1,4 @@
-![2-Player Solitaire](img/s2p-screenshot.png)
+![2-Player Solitaire](public/img/s2p-screenshot.png)
 
 # Amphibian.com 2-Player Solitaire
 
