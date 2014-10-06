@@ -78,7 +78,7 @@ function performStackReset(data) {
 		$(c).click(flipCardOffStack);
 		
 		if (10 % (i+1) === 0) {
-			p.left += 2;
+			p.left += 4;
 		}
 		
 	}
@@ -467,7 +467,7 @@ function setupGame(data) {
 		$(c).click(flipCardOffStack);
 		
 		if (10 % (i+1) === 0) {
-			p.left += 2;
+			p.left += 4;
 		}
 		
 	}
