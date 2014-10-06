@@ -1,34 +1,34 @@
 function performCardFlip(cdiv, cdata) {
 	
-	$(cdiv).removeClass('card-back');
-	$(cdiv).addClass('card-front');
-	$(cdiv).addClass(cdata.suit);
-	$(cdiv).html(cdata.face);
-	cdiv.card = cdata;
+	cdiv.removeClass('card-back');
+	cdiv.addClass('card-front');
+	cdiv.addClass(cdata.suit);
+	cdiv.html(cdata.face);
+	cdiv[0].card = cdata;
 	
-	$(cdiv).draggable("option", "disabled", false);
+	cdiv.draggable("option", "disabled", false);
 
 }
 
 function performCardFlipOffStack(cdiv, cdata) {
 	
-	$(cdiv).unbind('click');
+	cdiv.unbind('click');
 
 	var p = $('#discard').position();
 	
-	$(cdiv).removeClass('card-back');
-	$(cdiv).addClass('card-front');
-	$(cdiv).addClass(cdata.card.suit);
-	$(cdiv).html(cdata.card.face);
+	cdiv.removeClass('card-back');
+	cdiv.addClass('card-front');
+	cdiv.addClass(cdata.card.suit);
+	cdiv.html(cdata.card.face);
 	
-	$(cdiv).css('left', p.left + 'px');
-	$(cdiv).css('top', p.top + 'px');
+	cdiv.css('left', p.left + 'px');
+	cdiv.css('top', p.top + 'px');
 	
-	$(cdiv).zIndex(cdata.z);
+	cdiv.zIndex(cdata.z);
 
-	cdiv.card = cdata.card;
+	cdiv[0].card = cdata.card;
 
-	$(cdiv).draggable("option", "disabled", false);
+	cdiv.draggable("option", "disabled", false);
 	
 }
 
@@ -38,7 +38,7 @@ function flipCard() {
 		
 		var cardDiv = this;
 		checkFlip(cardDiv.card.id, function(data) {
-			performCardFlip(cardDiv, data);
+			performCardFlip($(cardDiv), data);
 		});
 
 	}
@@ -50,7 +50,7 @@ function flipCardOffStack() {
 	var cardDiv = this;
 
 	checkFlipOffStack(cardDiv.card.id, function(data) {
-		performCardFlipOffStack(cardDiv, data);
+		performCardFlipOffStack($(cardDiv), data);
 	});
 
 }
@@ -182,8 +182,6 @@ function performCardToBaseMove(data) {
 
 function cardStop(event, ui) {
 	
-	$(this).removeClass('dragging');
-
 	var zStart = this.lastZ || 1;
 	
 	if (this.dropped) {
@@ -221,6 +219,11 @@ function cardStop(event, ui) {
 					} else {
 						console.log('invalid card-on-card placement');
 						animateCard(cardDiv, cardDiv.returnPos);
+						if (window.sckt) {
+							window.sckt.emit('stop_drag_card', {
+					    		cardId: cardDiv.card.id
+					    	});
+						}
 					}
 
 					fixZIndex(cardDiv, zStart);
@@ -231,6 +234,11 @@ function cardStop(event, ui) {
 				console.log('invalid card-on-card placement (on face-down card)');
 				animateCard(this, this.returnPos);
 				fixZIndex(this, zStart);
+				if (window.sckt) {
+					window.sckt.emit('stop_drag_card', {
+			    		cardId: this.card.id
+			    	});
+				}
 			}
 			
 		} else if ($(this.droppedOn).hasClass('base')) {
@@ -254,6 +262,11 @@ function cardStop(event, ui) {
 				} else {
 					console.log('invalid card-on-base placement');
 					animateCard(cardDiv, cardDiv.returnPos);
+					if (window.sckt) {
+						window.sckt.emit('stop_drag_card', {
+				    		cardId: cardDiv.card.id
+				    	});
+					}
 				}
 
 				fixZIndex(cardDiv, zStart);
@@ -281,6 +294,11 @@ function cardStop(event, ui) {
 				} else {
 					console.log('invalid card-on-foundation placement');
 					animateCard(cardDiv, cardDiv.returnPos);
+					if (window.sckt) {
+						window.sckt.emit('stop_drag_card', {
+				    		cardId: cardDiv.card.id
+				    	});
+					}
 				}
 				
 				fixZIndex(cardDiv, zStart);
@@ -293,6 +311,11 @@ function cardStop(event, ui) {
 		console.log('not a valid drop target');
 		animateCard(this, this.returnPos);
 		fixZIndex(this, zStart);
+		if (window.sckt) {
+			window.sckt.emit('stop_drag_card', {
+	    		cardId: this.card.id
+	    	});
+		}
 	}
 	
 	this.dropped = false;
@@ -308,6 +331,7 @@ function animateCard(card, pos) {
 		top: pos.top
 	}, 500, function() {
 		crd.draggable("option", "disabled", false);
+		crd.removeClass('dragging');
 	});
 	
 	if (card.onTop) {
@@ -331,6 +355,12 @@ function moveAlong(e, pos) {
 
 function cardDrag(event, ui) {
 	moveAlong(this, ui.position);
+	if (window.sckt) {
+		window.sckt.emit('drag_card', {
+    		cardId: this.card.id,
+    		pos: ui.position
+    	});
+	}
 }
 
 function cardStart(event, ui) {
@@ -339,6 +369,11 @@ function cardStart(event, ui) {
 	this.lastZ = $(this).zIndex();
 	$(this).zIndex(999);
 	$(this).addClass('dragging');
+	if (window.sckt) {
+		window.sckt.emit('start_drag_card', {
+    		cardId: this.card.id
+    	});
+	}
 }
 
 function createCardDiv(card, parent) {
@@ -502,6 +537,31 @@ function setupGame(data) {
 
     window.sckt.on("score_point", function(data) {
     	updateScore(data);
+    });
+
+    window.sckt.on("drag_card", function(data) {
+    	var cdiv = $('#'+data.cardId);
+		cdiv.css('left', data.pos.left + 'px');
+		cdiv.css('top', data.pos.top + 'px');
+    	moveAlong(cdiv[0], data.pos);
+    });
+    
+    window.sckt.on("start_drag_card", function(data) {
+    	var cdiv = $('#'+data.cardId);
+    	cdiv.draggable("option", "disabled", true);
+    	cdiv[0].dropped = false;
+    	cdiv[0].returnPos = cdiv.position();
+    	cdiv[0].lastZ = cdiv.zIndex();
+    	cdiv.zIndex(999);
+    	cdiv.addClass('dragging');
+    });
+    
+    window.sckt.on("stop_drag_card", function(data) {
+    	var cdiv = $('#'+data.cardId);
+    	cdiv.draggable("option", "disabled", false);
+		animateCard(cdiv[0], cdiv[0].returnPos);
+		fixZIndex(cdiv[0], cdiv[0].lastZ || 1);
+    	cdiv.removeClass('dragging');
     });
 
 }

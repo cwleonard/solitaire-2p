@@ -25,6 +25,27 @@ io.on('connection', function(socket) {
 			games[gid].connectPlayer(pid, socket);
 		}
 	});
+	socket.on("drag_card", function(data) {
+		var gid = socket['game_id'];
+		var pid = socket['player_id'];
+		if (games[gid]) {
+			games[gid].sendDrag(pid, data.cardId, data.pos);
+		}
+	});
+	socket.on("start_drag_card", function(data) {
+		var gid = socket['game_id'];
+		var pid = socket['player_id'];
+		if (games[gid]) {
+			games[gid].sendStartDrag(pid, data.cardId);
+		}
+	});
+	socket.on("stop_drag_card", function(data) {
+		var gid = socket['game_id'];
+		var pid = socket['player_id'];
+		if (games[gid]) {
+			games[gid].sendStopDrag(pid, data.cardId);
+		}
+	});
 	socket.on("disconnect", function() {
 		var gid = socket['game_id'];
 		var pid = socket['player_id'];

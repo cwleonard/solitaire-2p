@@ -617,6 +617,31 @@ module.exports = function() {
 			
 		};
 		
+		this.sendDrag = function(pid, cardId, pos) {
+			
+			sendToOtherPlayer(pid, "drag_card", {
+				cardId: cardId,
+				pos: pos
+			});
+			
+		};
+
+		this.sendStartDrag = function(pid, cardId) {
+			
+			sendToOtherPlayer(pid, "start_drag_card", {
+				cardId: cardId
+			});
+			
+		};
+
+		this.sendStopDrag = function(pid, cardId) {
+			
+			sendToOtherPlayer(pid, "stop_drag_card", {
+				cardId: cardId
+			});
+			
+		};
+
 		function sendToOtherPlayer(me, event, data) {
 			
 			for (var p in players) {
