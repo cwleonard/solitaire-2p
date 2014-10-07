@@ -371,8 +371,8 @@ function cardStart(event, ui) {
 	$(this).addClass('dragging');
 	if (window.sckt) {
 		window.sckt.emit('start_drag_card', {
-    		cardId: this.card.id
-    	});
+			cardId: this.card.id
+		});
 	}
 }
 

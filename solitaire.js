@@ -461,7 +461,7 @@ module.exports = function() {
 			var ok = false;
 			if (f.length === 0 && card.getValue() === 1) {
 				ok = true;
-			} else if (f.length > 0 && f[f.length-1].accept(card)) {
+			} else if (f.length > 0 && f[f.length-1].accept(card) && card === card.getLocation()[card.getLocation().length-1]) {
 				ok = true;
 			}
 			
