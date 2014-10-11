@@ -16,7 +16,7 @@ module.exports = function() {
 	var BASE       = 32;
 	var FOUNDATION = 33;
 	
-	var htmlCode = ['&hearts;', '&clubs;', '&spades;', '&diams;'];
+	var htmlCode = ['', '', '', ''];
 	var valueText = [ 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K' ];
 	
 	/**
@@ -66,7 +66,7 @@ module.exports = function() {
 		};
 		
 		this.getFace = function() {
-			return valueText[value-1] + ' ' + htmlCode[suit];
+			return valueText[value-1];
 		};
 		
 		this.getValue = function() {

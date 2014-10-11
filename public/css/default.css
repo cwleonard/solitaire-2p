@@ -19,8 +19,6 @@ body {
 	width: 75px;
 	height: 100px;
 	border: 2px #00FF00 solid;
-	text-align: center;
-	font-size: 36px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;	
@@ -30,8 +28,6 @@ body {
 	position: absolute;
 	width: 75px;
 	height: 100px;
-	text-align: center;
-	font-size: 36px;
 }
 
 .foundation {
@@ -39,8 +35,6 @@ body {
 	width: 75px;
 	height: 100px;
 	border: 2px #FF0000 dashed;
-	text-align: center;
-	font-size: 36px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;	
@@ -51,8 +45,6 @@ body {
 	width: 75px;
 	height: 100px;
 	border: 2px #000000 dotted;
-	text-align: center;
-	font-size: 36px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;	
@@ -69,12 +61,29 @@ body {
 	width: 75px;
 	height: 100px;
 	border: 2px #000000 solid;
-	text-align: center;
-	font-size: 36px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 25px;
+	font-weight: bold;
 	font-family: serif;
+	line-height: 1;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;	
+}
+
+.card-val {
+	text-rendering: auto;
+}
+
+.card-val-bottom {
+	text-rendering: auto;
+	position: absolute;
+	top: 70px;
+	width: 85%;
+	-ms-transform: rotate(180deg); /* IE 9 */
+    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+    transform: rotate(180deg);
 }
 
 .card-front {

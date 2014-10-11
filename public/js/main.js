@@ -1,9 +1,11 @@
+var CARD_OFFSET = 30;
+
 function performCardFlip(cdiv, cdata) {
 	
 	cdiv.removeClass('card-back');
 	cdiv.addClass('card-front');
 	cdiv.addClass(cdata.suit);
-	cdiv.html(cdata.face);
+	cdiv.html(getCardFaceHtml(cdata));
 	cdiv[0].card = cdata;
 	
 	cdiv.draggable("option", "disabled", false);
@@ -19,7 +21,7 @@ function performCardFlipOffStack(cdiv, cdata) {
 	cdiv.removeClass('card-back');
 	cdiv.addClass('card-front');
 	cdiv.addClass(cdata.card.suit);
-	cdiv.html(cdata.card.face);
+	cdiv.html(getCardFaceHtml(cdata.card));
 	
 	cdiv.css('left', p.left + 'px');
 	cdiv.css('top', p.top + 'px');
@@ -123,7 +125,7 @@ function performCardToCardMove(data) {
 	zStart = targetDiv.zIndex() + 1;
 
 	if (data.onBase) {
-		p.top += 25;
+		p.top += CARD_OFFSET;
 	}
 
 	// stuff for the html...
@@ -214,7 +216,7 @@ function cardStop(event, ui) {
 						zStart = data.zi || $(cardDiv.droppedOn).zIndex() + 1;
 
 						if (data.onBase) {
-							p.top += 25;
+							p.top += CARD_OFFSET;
 						}
 
 						// stuff for the html...
@@ -353,7 +355,7 @@ function animateCard(card, pos, duration, cb) {
 	});
 	
 	if (card.onTop) {
-		pos.top += 25;
+		pos.top += CARD_OFFSET;
 		animateCard(card.onTop, pos);
 	}
 	
@@ -363,7 +365,7 @@ function moveAlong(e, pos) {
 	
 	if (e.onTop) {
 		$(e.onTop).css('left', pos.left + 'px');
-		$(e.onTop).css('top', (pos.top + 25) + 'px');
+		$(e.onTop).css('top', (pos.top + CARD_OFFSET) + 'px');
 		$(e.onTop).zIndex($(e).zIndex() + 1);
 		$(e.onTop).droppable("option", "disabled", true);
 		moveAlong(e.onTop, $(e.onTop).position());
@@ -398,6 +400,19 @@ function cardStart(event, ui) {
 	}
 }
 
+function getSuitImg(s) {
+	
+	return '<img src="/img/suit_' + s + '.png"/>';
+	
+}
+
+function getCardFaceHtml(c) {
+	
+	var html = '<div class="card-val">' + c.face + ' ' + getSuitImg(c.suit) + '</div>';
+	html += '<div class="card-val-bottom">' + c.face + ' ' + getSuitImg(c.suit) + '</div>';
+	return html;
+}
+
 function createCardDiv(card, parent) {
 	
 	var c = document.createElement('div');
@@ -405,7 +420,7 @@ function createCardDiv(card, parent) {
 	$(c).addClass('card');
 	if (card.faceUp) {
 		$(c).addClass('card-front');
-		$(c).html(card.face);
+		$(c).html(getCardFaceHtml(card));
 		$(c).addClass(card.suit);
 	} else {
 		$(c).addClass('card-back');
@@ -452,7 +467,7 @@ function setupGame(data) {
 			$(c).css('top', p.top + 'px');
 			$(c).zIndex(j+1);
 			
-			p.top += 25;
+			p.top += CARD_OFFSET;
 			
 			lastCard = c;
 		
