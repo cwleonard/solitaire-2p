@@ -348,7 +348,7 @@ module.exports = function() {
 				return null;
 			}
 
-			card = cardMap[cardId];
+			var card = cardMap[cardId];
 
 			if (!card.isFaceUp() && card.getLocationType() === STACK && card.getLocation()[card.getLocation().length - 1] === card) {
 				card.flip();
@@ -398,20 +398,24 @@ module.exports = function() {
 				return null;
 			}
 			
-		}
+		};
 
 		this.moveCardToCard = function(cardId, targetId, pid) {
 			
-			target = cardMap[targetId];
+			var target = cardMap[targetId];
 			
 			if (target.getLocationType() === BASE && target.getLocation()[target.getLocation().length-1] !== target) {
 
-				return false;
+				return {
+					ok: false
+				};
 
 			} else if (target.getLocationType() === BASE) {
 				
-				var res = this.moveCardToBase(cardId, target.getLocation());
-				if (res) {
+				var ret = {ok: false};
+				ret.ok = this.moveCardToBase(cardId, target.getLocation());
+				if (ret.ok) {
+					ret.onBase = true;
 					sendToOtherPlayer(pid, "move_card_to_card", {
 						moveId: cardId,
 						targetId: targetId,
@@ -419,24 +423,30 @@ module.exports = function() {
 					});
 					addPoint(pid);
 				}
-				return res;
+				return ret;
 				
 			} else if (target.getLocationType() === FOUNDATION) {
 				
-				var res = this.moveCardToFoundation(cardId, target.getLocation());
-				if (res) {
+				var ret = {ok: false};
+				ret.ok = this.moveCardToFoundation(cardId, target.getLocation());
+				if (ret.ok) {
+					ret.onBase = false;
+					ret.zi = target.getLocation().length;
 					sendToOtherPlayer(pid, "move_card_to_card", {
 						moveId: cardId,
 						targetId: targetId,
-						onBase: false
+						onBase: false,
+						zi: ret.zi
 					});
 					addPoint(pid);
 				}
-				return res;
+				return ret;
 				
 			} else {
 				
-				return false;
+				return {
+					ok: false
+				};
 				
 			}
 			
@@ -456,7 +466,7 @@ module.exports = function() {
 		
 		this.moveCardToFoundation = function(cardId, f) {
 			
-			card = cardMap[cardId];
+			var card = cardMap[cardId];
 
 			var ok = false;
 			if (f.length === 0 && card.getValue() === 1) {
@@ -466,7 +476,9 @@ module.exports = function() {
 			}
 			
 			if (ok) {
-				
+
+				card.dragger = null;
+
 				// pull from current location
 				var pullIndex = -1;
 				var s = card.getLocation();
@@ -504,7 +516,7 @@ module.exports = function() {
 			
 		this.moveCardToBase = function(cardId, b) {
 
-			card = cardMap[cardId];
+			var card = cardMap[cardId];
 
 			var ok = false;
 			if (b.length === 0 && card.getValue() === 13) { // only accept K at bottom
@@ -514,6 +526,8 @@ module.exports = function() {
 			}
 			
 			if (ok) {
+				
+				card.dragger = null;
 				
 				// pull from current location
 				var pullIndex = -1;
@@ -626,21 +640,41 @@ module.exports = function() {
 			
 		};
 
-		this.sendStartDrag = function(pid, cardId) {
+		this.startDrag = function(pid, cardId) {
 			
-			sendToOtherPlayer(pid, "start_drag_card", {
-				cardId: cardId
-			});
+			var card = cardMap[cardId];
+			if (card.dragger) {
+				sendToPlayer(pid, "abort_drag", {
+					cardId: cardId
+				});
+			} else {
+				card.dragger = pid;
+				sendToOtherPlayer(pid, "start_drag_card", {
+					cardId: cardId
+				});
+			}
 			
 		};
 
-		this.sendStopDrag = function(pid, cardId) {
+		this.stopDrag = function(pid, cardId) {
 			
+			var card = cardMap[cardId];
+			card.dragger = null;
 			sendToOtherPlayer(pid, "stop_drag_card", {
 				cardId: cardId
 			});
 			
 		};
+
+		function sendToPlayer(pid, event, data) {
+			
+			var player = players[pid];
+			if (player && player.socket) {
+				console.log('sending ' + event + ' to ' + player.id);
+				player.socket.emit(event, data);
+			}
+			
+		}
 
 		function sendToOtherPlayer(me, event, data) {
 			

@@ -202,7 +202,7 @@ function cardStop(event, ui) {
 
 						console.log('valid card-on-card placement');
 
-						zStart = $(cardDiv.droppedOn).zIndex() + 1;
+						zStart = data.zi || $(cardDiv.droppedOn).zIndex() + 1;
 
 						if (data.onBase) {
 							p.top += 25;
@@ -251,7 +251,9 @@ function cardStop(event, ui) {
 				if (data.ok) {
 					
 					console.log('valid card-on-base placement');
-
+					
+					zStart = 1;
+					
 					// stuff for the html...
 					if (cardDiv.cardUnder) {
 						cardDiv.cardUnder.onTop = null;
@@ -284,6 +286,8 @@ function cardStop(event, ui) {
 
 					console.log('valid card-on-foundation placement');
 
+					zStart = 1;
+					
 					// stuff for the html...
 					if (cardDiv.cardUnder) {
 						cardDiv.cardUnder.onTop = null;
@@ -322,16 +326,21 @@ function cardStop(event, ui) {
 	
 }
 
-function animateCard(card, pos) {
+function animateCard(card, pos, duration, cb) {
+	
+	var d = duration || 500;
 	
 	var crd = $(card);
 	crd.draggable("option", "disabled", true);
 	crd.animate({
 		left: pos.left,
 		top: pos.top
-	}, 500, function() {
+	}, d, function() {
 		crd.draggable("option", "disabled", false);
 		crd.removeClass('dragging');
+		if (cb) {
+			cb();
+		}
 	});
 	
 	if (card.onTop) {
@@ -558,10 +567,10 @@ function setupGame(data) {
     
     window.sckt.on("stop_drag_card", function(data) {
     	var cdiv = $('#'+data.cardId);
-    	cdiv.draggable("option", "disabled", false);
-		animateCard(cdiv[0], cdiv[0].returnPos);
-		fixZIndex(cdiv[0], cdiv[0].lastZ || 1);
-    	cdiv.removeClass('dragging');
+		animateCard(cdiv[0], cdiv[0].returnPos, 200, function() {
+			var zzz = data.zi || cdiv[0].lastZ || 1;
+			fixZIndex(cdiv[0], zzz);
+		});
     });
 
 }

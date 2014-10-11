@@ -36,14 +36,14 @@ io.on('connection', function(socket) {
 		var gid = socket['game_id'];
 		var pid = socket['player_id'];
 		if (games[gid]) {
-			games[gid].sendStartDrag(pid, data.cardId);
+			games[gid].startDrag(pid, data.cardId);
 		}
 	});
 	socket.on("stop_drag_card", function(data) {
 		var gid = socket['game_id'];
 		var pid = socket['player_id'];
 		if (games[gid]) {
-			games[gid].sendStopDrag(pid, data.cardId);
+			games[gid].stopDrag(pid, data.cardId);
 		}
 	});
 	socket.on("disconnect", function() {
@@ -86,11 +86,8 @@ app.post('/move-card/:c1/to-card/:c2', function(req, res, next) {
 	
 	var gid = req.body.gid;
 	var pid = req.body.pid;
-	var ok = games[gid].moveCardToCard(req.params.c1, req.params.c2, pid);
-	res.send({
-		ok: ok,
-		onBase: games[gid].isCardOnBase(req.params.c1)
-	});
+	var d = games[gid].moveCardToCard(req.params.c1, req.params.c2, pid);
+	res.send(d);
 	
 });
 
