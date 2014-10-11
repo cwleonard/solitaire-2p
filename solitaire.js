@@ -379,6 +379,15 @@ module.exports = function() {
 				
 				for (var d = discard.length - 1; d >= 0; d--) {
 					var card = discard[d];
+					if (card.dragger) {
+						// if any card in the discard pile is currently being drug around
+						// we won't allow the stack to be reset
+						return null;
+					}
+				}
+
+				for (var d = discard.length - 1; d >= 0; d--) {
+					var card = discard[d];
 					card.flip();
 					// put on top of stack
 					card.setLocationType(STACK);

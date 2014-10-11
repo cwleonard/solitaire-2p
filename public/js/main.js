@@ -181,9 +181,18 @@ function performCardToBaseMove(data) {
 }
 
 function cardStop(event, ui) {
+
+	if (this.abortDrag) {
+		
+		this.abortDrag = false;
+		this.dropped = false;
+		
+		return;
+		
+	}
 	
 	var zStart = this.lastZ || 1;
-	
+
 	if (this.dropped) {
 		
 		var p = $(this.droppedOn).position();
@@ -363,12 +372,16 @@ function moveAlong(e, pos) {
 }
 
 function cardDrag(event, ui) {
-	moveAlong(this, ui.position);
-	if (window.sckt) {
-		window.sckt.emit('drag_card', {
-    		cardId: this.card.id,
-    		pos: ui.position
-    	});
+	if (this.abortDrag) {
+		return false;
+	} else {
+		moveAlong(this, ui.position);
+		if (window.sckt) {
+			window.sckt.emit('drag_card', {
+				cardId: this.card.id,
+				pos: ui.position
+			});
+		}
 	}
 }
 
@@ -571,6 +584,11 @@ function setupGame(data) {
 			var zzz = data.zi || cdiv[0].lastZ || 1;
 			fixZIndex(cdiv[0], zzz);
 		});
+    });
+    
+    window.sckt.on("abort_drag", function(data) {
+    	var cdiv = $('#'+data.cardId);
+    	cdiv[0].abortDrag = true;
     });
 
 }
