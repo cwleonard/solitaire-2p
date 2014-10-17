@@ -16,38 +16,49 @@ body {
 
 #stack {
 	position: absolute;
-	width: 75px;
-	height: 100px;
-	border: 2px #00FF00 solid;
+	width: 38px;
+	height: 51px;
+	border: 1px #00FF00 solid;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
-	border-radius: 5px;	
+	border-radius: 5px;
+	
+	top: 51px;
+	left: 7px;
 }
 
 #discard {
 	position: absolute;
-	width: 75px;
-	height: 100px;
+	width: 38px;
+	height: 51px;
+	 z-index: -1;
+	 
+	top: 51px;
+	left: 52px;
 }
 
 .foundation {
 	position: absolute;
-	width: 75px;
-	height: 100px;
-	border: 2px #FF0000 dashed;
+	width: 38px;
+	height: 51px;
+	border: 1px #FF0000 dashed;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;	
+	
+	top: 51px;
 }
 
 .base {
 	position: absolute;
-	width: 75px;
-	height: 100px;
-	border: 2px #000000 dotted;
+	width: 38px;
+	height: 51px;
+	border: 1px #000000 dotted;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
-	border-radius: 5px;	
+	border-radius: 5px;
+
+	top: 112px;
 }
 
 .dragging {
@@ -58,12 +69,12 @@ body {
 
 .card {
 	position: absolute;
-	width: 75px;
-	height: 100px;
-	border: 2px #000000 solid;
-	padding-left: 5px;
-	padding-right: 5px;
-	font-size: 25px;
+	width: 38px;
+	height: 51px;
+	border: 1px #000000 solid;
+	padding-left: 2px;
+	padding-right: 2px;
+	font-size: 12px;
 	font-weight: bold;
 	font-family: serif;
 	line-height: 1;
@@ -76,14 +87,24 @@ body {
 	text-rendering: auto;
 }
 
+.card-val img {
+	width: 9px;
+	height: 10px;
+}
+
 .card-val-bottom {
 	text-rendering: auto;
 	position: absolute;
-	top: 70px;
+	top: 37px;
 	width: 85%;
 	-ms-transform: rotate(180deg); /* IE 9 */
     -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
     transform: rotate(180deg);
+}
+
+.card-val-bottom img {
+	width: 9px;
+	height: 10px;
 }
 
 .card-front {
@@ -109,4 +130,249 @@ body {
 
 .clubs {
 	color: #000000;
+}
+
+
+
+#foundation-1 {
+	left: 142px;
+}
+#foundation-2 {
+	left: 187px;
+}
+#foundation-3 {
+	left: 232px;
+}
+#foundation-4 {
+	left: 277px;
+}
+
+
+#base-1 {
+	left: 7px;
+}
+#base-2 {
+	left: 52px;
+}
+#base-3 {
+	left: 97px;
+}
+#base-4 {
+	left: 142px;
+}
+#base-5 {
+	left: 187px;
+}
+#base-6 {
+	left: 232px;
+}
+#base-7 {
+	left: 277px;
+}
+
+
+/* --------- responsive media stuff ---------------------- */
+
+@media only screen and (min-width: 360px) {
+
+
+#stack {
+	width: 40px;
+	height: 54px;
+	top: 54px;
+	left: 10px;
+}
+
+#discard {
+	width: 40px;
+	height: 54px;
+	top: 54px;
+	left: 60px;
+}
+
+.foundation {
+	top: 54px;
+	width: 40px;
+	height: 54px;
+}
+
+.base {
+	width: 40px;
+	height: 54px;
+	top: 118px;
+}
+
+.card {
+	width: 40px;
+	height: 54px;
+	padding-left: 2px;
+	padding-right: 2px;
+	font-size: 12px;
+}
+
+.card-val-bottom {
+	top: 39px;
+}
+
+.card-val img {
+	width: 9px;
+	height: 10px;
+}
+
+.card-val-bottom img {
+	width: 9px;
+	height: 10px;
+}
+	
+	
+	
+	
+#foundation-1 {
+	left: 160px;
+}
+#foundation-2 {
+	left: 210px;
+}
+#foundation-3 {
+	left: 260px;
+}
+#foundation-4 {
+	left: 310px;
+}
+
+
+#base-1 {
+	left: 10px;
+}
+#base-2 {
+	left: 60px;
+}
+#base-3 {
+	left: 110px;
+}
+#base-4 {
+	left: 160px;
+}
+#base-5 {
+	left: 210px;
+}
+#base-6 {
+	left: 260px;
+}
+#base-7 {
+	left: 310px;
+}
+
+	
+	
+}
+
+@media only screen and (min-width: 400px) {
+
+
+}
+
+
+
+
+
+
+
+
+
+@media only screen and (min-width: 670px) {
+
+#stack {
+	width: 75px;
+	height: 100px;
+	border: 2px #00FF00 solid;
+
+	top: 100px;
+	left: 19px;
+}
+
+#discard {
+	width: 75px;
+	height: 100px;
+
+	top: 100px;
+	left: 113px;
+}
+
+.foundation {
+	top: 100px;
+	width: 75px;
+	height: 100px;
+	border: 2px #FF0000 dashed;
+}
+
+.base {
+	width: 75px;
+	height: 100px;
+	border: 2px #000000 dotted;
+
+	top: 221px;
+}
+
+.card {
+	width: 75px;
+	height: 100px;
+	border: 2px #000000 solid;
+
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 25px;
+}
+
+.card-val-bottom {
+	top: 70px;
+}
+
+.card-val img {
+	width: 17px;
+	height: 20px;
+}
+
+.card-val-bottom img {
+	width: 17px;
+	height: 20px;
+}
+
+#foundation-1 {
+	left: 301px;
+}
+#foundation-2 {
+	left: 395px;
+}
+#foundation-3 {
+	left: 489px;
+}
+#foundation-4 {
+	left: 583px;
+}
+
+
+#base-1 {
+	left: 19px;
+}
+#base-2 {
+	left: 113px;
+}
+#base-3 {
+	left: 207px;
+}
+#base-4 {
+	left: 301px;
+}
+#base-5 {
+	left: 395px;
+}
+#base-6 {
+	left: 489px;
+}
+#base-7 {
+	left: 583px;
+}
+
+
 }

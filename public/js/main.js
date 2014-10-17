@@ -1,4 +1,3 @@
-var CARD_OFFSET = 30;
 
 function performCardFlip(cdiv, cdata) {
 	
@@ -80,7 +79,7 @@ function performStackReset(data) {
 		$(c).click(flipCardOffStack);
 		
 		if (10 % (i+1) === 0) {
-			p.left += 4;
+			p.left += window.STACK_OFFSET;
 		}
 		
 	}
@@ -381,7 +380,10 @@ function cardDrag(event, ui) {
 		if (window.sckt) {
 			window.sckt.emit('drag_card', {
 				cardId: this.card.id,
-				pos: ui.position
+				pos: {
+					top: ui.position.top / window.S_FACTOR,
+					left: ui.position.left / window.S_FACTOR,
+				}
 			});
 		}
 	}
@@ -449,6 +451,25 @@ function createCardDiv(card, parent) {
 
 function setupGame(data) {
 	
+	// check our size (phone, tablet, desktop, etc)
+	var cSize = $('#stack').css('width');
+	if (cSize === '75px') {
+		// biggest
+		window.S_FACTOR = 1.875;
+		window.CARD_OFFSET = 30;
+		window.STACK_OFFSET = 4;
+	} else if (cSize === '40px'){
+		// medium
+		window.S_FACTOR = 1;
+		window.CARD_OFFSET = 16;
+		window.STACK_OFFSET = 2;
+	} else {
+		// smallest
+		window.S_FACTOR = 0.90;
+		window.CARD_OFFSET = 14;
+		window.STACK_OFFSET = 2;
+	}
+	
 	for (var i = 0; i < data.bases.length; i++) {
 		
 		var s = data.bases[i];
@@ -504,7 +525,7 @@ function setupGame(data) {
 		$(c).click(flipCardOffStack);
 		
 		if (10 % (i+1) === 0) {
-			p.left += 4;
+			p.left += window.STACK_OFFSET;
 		}
 		
 	}
@@ -577,6 +598,8 @@ function setupGame(data) {
     });
 
     window.sckt.on("drag_card", function(data) {
+    	data.pos.top = data.pos.top * window.S_FACTOR;
+    	data.pos.left = data.pos.left * window.S_FACTOR;
     	var cdiv = $('#'+data.cardId);
 		cdiv.css('left', data.pos.left + 'px');
 		cdiv.css('top', data.pos.top + 'px');
@@ -800,6 +823,6 @@ $(function() {
     	accept: '.card',
     	drop: cardDrop
     });
-
+    
 });
 
