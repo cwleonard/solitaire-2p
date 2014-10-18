@@ -1,17 +1,25 @@
 body {
-	background: url(/img/pool_table.png);
+	background:
+		url(/img/watermark.png) center 400px no-repeat,
+		url(/img/pool_table.png);
 }
 
 #scores {
-	padding: 20px;
+	padding: 5px;
 	color: #FFFFFF;
-	font-size: 20px;
+	font-size: 16px;
 }
 
 #newGame {
+	padding: 20px;
+}
+
+#shareInfo {
+	color: #FFFFFF;
+	font-size: 16px;
 	position: absolute;
-	top: 25px;
-	left: 500px;
+	top: 5px;
+	left: 142px;
 }
 
 #stack {
@@ -190,6 +198,11 @@ body {
 	left: 60px;
 }
 
+#shareInfo {
+	top: 5px;
+	left: 140px;
+}
+
 .foundation {
 	top: 54px;
 	width: 40px;
@@ -281,6 +294,23 @@ body {
 
 
 @media only screen and (min-width: 670px) {
+
+body {
+	background:
+		url(/img/watermark.png) 190px 500px no-repeat,
+		url(/img/pool_table.png);
+}
+
+#scores {
+	padding: 20px;
+	color: #FFFFFF;
+	font-size: 20px;
+}
+
+#shareInfo {
+	top: 25px;
+	left: 301px;
+}
 
 #stack {
 	width: 75px;

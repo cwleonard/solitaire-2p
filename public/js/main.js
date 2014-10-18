@@ -549,6 +549,8 @@ function setupGame(data) {
 		$('#p2-score').html(p2.name + ": " + p2.score);
 	}
 	
+	$('#shareInfo').html("Invite a friend! Just send them this link:<br/><input style='width: 100%; color: #000000;' type='text' value='" + window.location.href + "'/>");
+	
 	// connect via socket.io
 	var urlParts = window.location.href.split("/");
 	var cUrl = urlParts[0] + "//" + urlParts[2];
@@ -567,6 +569,11 @@ function setupGame(data) {
     window.sckt.on("player_join", function(data) {
     	console.log('player ' + data.name + ' joined the game');
     	$('#p' + data.num + '-score').html(data.name + ": " + data.score);
+    });
+
+    window.sckt.on("player_leave", function(data) {
+    	console.log('player ' + data.name + ' left the game');
+    	$('#p' + data.num + '-score').html("Player " + data.num + ": 0");
     });
 
     window.sckt.on("flip_card", function(data) {
@@ -737,27 +744,43 @@ function joinGame(gid, pid, pname) {
 
 function promptNewGame() {
 	$('#joinTitle').html("Create New Game");
+	$('#modMessage').hide();
 	$('#joinGameModal').modal('show');
 }
 
 function joinExistingGame(gid) {
 	
-	$('#newGame').hide();
-	
-	console.log("joining game '" + gid + "'");
-	
 	$.get("/game-info/" + gid, function(data) {
 
 		if (data.length > 0) {
+
 			var pname = $('#playerName').val();
 			var pid = data[0];
 			$('#joinGameModal').modal('hide');
 			joinGame(gid, pid, pname);
+
+			$('#scores').show();
+			$('#newGame').hide();
+		
 		} else {
-			console.log('cant join, game is full');
+
+			$('#modMessage').html("Game \"" + gid + "\" already has 2 players. Sorry. Try making a new one");
+			$('#modMessage').show();
+			
+			$('#newGameButton').click(promptNewGame);
+			$('#joinButton').click(createNewGame);
+		
 		}
 
-	}, "json");
+	}, "json").fail(function() {
+		
+		$('#modMessage').html("Unable to load game \"" + gid + "\". Sorry. Try making a new one");
+		$('#modMessage').show();
+		
+		$('#newGameButton').click(promptNewGame);
+		$('#joinButton').click(createNewGame);
+		
+	});
 	
 }
 
@@ -765,6 +788,7 @@ function createNewGame() {
 
 	$.post("/create", function(data) {
 
+		$('#scores').show();
 		$('#newGame').hide();
 		
 		var gid = data.gameId;
@@ -779,7 +803,7 @@ function createNewGame() {
 			
 			var stateObj = { gameId: gid };
 			if (history.pushState) {
-				history.pushState(stateObj, "game " + gid, 'game/' + gid);
+				history.pushState(stateObj, "game " + gid, '/game/' + gid);
 			} else {
 				console.log('really? IE?');
 			}

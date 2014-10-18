@@ -719,6 +719,10 @@ module.exports = function() {
 
 			if (pid) {
 				console.log('disconnected player ' + pid + ' socket');
+				sendToOtherPlayer(pid, 'player_leave', {
+					name: players[pid].name,
+					num: players[pid].num
+				});
 				players[pid].name = null;
 				players[pid].socket = null;
 			}

@@ -78,7 +78,11 @@ app.post('/join/:n', function(req, res, next) {
 app.get('/game-info/:n', function(req, res, next) {
 	
 	var gid = req.params.n;
-	res.send(games[gid].getInfo());
+	if (games[gid]) {
+		res.send(games[gid].getInfo());
+	} else {
+		res.status(404).end();
+	}
 	
 });
 
