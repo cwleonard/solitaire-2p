@@ -1,3 +1,12 @@
+function showError() {
+	
+	$('#scores').hide();
+	$('#newGame').hide();
+	$('#shareInfo').hide();
+	$('#errorInfo').show();
+	
+}
+
 
 function performCardFlip(cdiv, cdata) {
 	
@@ -549,7 +558,7 @@ function setupGame(data) {
 		$('#p2-score').html(p2.name + ": " + p2.score);
 	}
 	
-	$('#shareInfo').html("Invite a friend! Just send them this link:<br/><input style='width: 100%; color: #000000;' type='text' value='" + window.location.href + "'/>");
+	$('#shareInfo').show();
 	
 	// connect via socket.io
 	var urlParts = window.location.href.split("/");
@@ -557,15 +566,23 @@ function setupGame(data) {
 	if (!window.location.port) {
 		cUrl += ':5000';
 	}
-    window.sckt = io.connect(cUrl);
+    window.sckt = io.connect(cUrl, { reconnection: false });
     window.sckt.on("connect", function() {
+
     	window.sckt.emit('join', {
     		gameId: window.gameId,
     		playerId: window.playerId
     	});
+    		
         console.log("socket connected");
+        
     });
-    
+
+    window.sckt.on("disconnect", function() {
+        console.log("socket disconnected");
+        showError();
+    });
+
     window.sckt.on("player_join", function(data) {
     	console.log('player ' + data.name + ' joined the game');
     	$('#p' + data.num + '-score').html(data.name + ": " + data.score);
@@ -647,6 +664,10 @@ function setupGame(data) {
  */
 function checkFlip(cid, callback) {
 	
+	if (window.sckt && !window.sckt.connected) {
+		showError();
+	}
+	
 	var info = {
 		gid: window.gameId,
 		pid: window.playerId
@@ -660,7 +681,11 @@ function checkFlip(cid, callback) {
 }
 
 function checkFlipOffStack(cid, callback) {
-	
+
+	if (window.sckt && !window.sckt.connected) {
+		showError();
+	}
+
 	var info = {
 		gid: window.gameId,
 		pid: window.playerId
@@ -674,7 +699,11 @@ function checkFlipOffStack(cid, callback) {
 }
 
 function checkResetStack(callback) {
-	
+
+	if (window.sckt && !window.sckt.connected) {
+		showError();
+	}
+
 	var info = {
 		gid: window.gameId,
 		pid: window.playerId
@@ -688,38 +717,62 @@ function checkResetStack(callback) {
 }
 
 function checkCardToCardMove(cid, tid, callback) {
-	
+
+	if (window.sckt && !window.sckt.connected) {
+		showError();
+	}
+
 	var info = {
 			gid: window.gameId,
 			pid: window.playerId
 		};
 	$.post("/move-card/" + cid + "/to-card/" + tid, info, function(data) {
 		callback(data);
-	}, "json");
+	}, "json").fail(function() {
+		callback({
+			ok: false
+		});
+	});;
 	
 }
 
 function checkCardToBaseMove(cid, bn, callback) {
-	
+
+	if (window.sckt && !window.sckt.connected) {
+		showError();
+	}
+
 	var info = {
 			gid: window.gameId,
 			pid: window.playerId
 		};
 	$.post("/move-card/" + cid + "/to-base/" + bn, info, function(data) {
 		callback(data);
-	}, "json");
+	}, "json").fail(function() {
+		callback({
+			ok: false
+		});
+	});
 	
 }
 
 function checkCardToFoundationMove(cid, fn, callback) {
-	
+
+	if (window.sckt && !window.sckt.connected) {
+		showError();
+	}
+
 	var info = {
 			gid: window.gameId,
 			pid: window.playerId
 		};
 	$.post("/move-card/" + cid + "/to-foundation/" + fn, info, function(data) {
 		callback(data);
-	}, "json");
+	}, "json").fail(function() {
+		callback({
+			ok: false
+		});
+	});
 	
 }
 
@@ -733,8 +786,8 @@ function joinGame(gid, pid, pname) {
 	
 	$.post("/join/" + gid, pinfo, function(data) {
 
-		console.log("joined game '" + gid + "'");
 		window.playerId = pid;
+		window.playerName = pname;
 		window.gameId = gid;
 		setupGame(data);
 
@@ -767,7 +820,9 @@ function joinExistingGame(gid) {
 			$('#modMessage').html("Game \"" + gid + "\" already has 2 players. Sorry. Try making a new one");
 			$('#modMessage').show();
 			
+			$('#newGameButton').unbind();
 			$('#newGameButton').click(promptNewGame);
+			$('#joinButton').unbind();
 			$('#joinButton').click(createNewGame);
 		
 		}
@@ -777,7 +832,9 @@ function joinExistingGame(gid) {
 		$('#modMessage').html("Unable to load game \"" + gid + "\". Sorry. Try making a new one");
 		$('#modMessage').show();
 		
+		$('#newGameButton').unbind();
 		$('#newGameButton').click(promptNewGame);
+		$('#joinButton').unbind();
 		$('#joinButton').click(createNewGame);
 		
 	});
@@ -835,6 +892,18 @@ $(function() {
 		$('#joinButton').click(createNewGame);
 
 	}
+	
+	$('#shareGameModal').on('show.bs.modal', function(e) {
+		$('#shareUrl').val(window.location.href);
+	});
+	
+	$('#inviteButton').click(function() {
+		$('#shareGameModal').modal('show');
+	});
+	
+	$('#reloadButton').click(function() {
+		window.location.reload();
+	});
 	
 	$('#stack').click(resetStack);
 	

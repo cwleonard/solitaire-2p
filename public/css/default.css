@@ -1,6 +1,6 @@
 body {
 	background:
-		url(/img/watermark.png) center 400px no-repeat,
+		url(/img/watermark.png) center 300px no-repeat,
 		url(/img/pool_table.png);
 }
 
@@ -11,15 +11,21 @@ body {
 }
 
 #newGame {
-	padding: 20px;
+	position: absolute;
+	top: 10px;
+	left: 7px;
 }
 
 #shareInfo {
-	color: #FFFFFF;
-	font-size: 16px;
 	position: absolute;
-	top: 5px;
+	top: 10px;
 	left: 142px;
+}
+
+#errorInfo {
+	position: absolute;
+	top: 10px;
+	left: 7px;
 }
 
 #stack {
@@ -183,7 +189,12 @@ body {
 
 @media only screen and (min-width: 360px) {
 
-
+body {
+	background:
+		url(/img/watermark.png) center 400px no-repeat,
+		url(/img/pool_table.png);
+}
+	
 #stack {
 	width: 40px;
 	height: 54px;
@@ -198,9 +209,19 @@ body {
 	left: 60px;
 }
 
+#newGame {
+	top: 10px;
+	left: 10px;
+}
+
 #shareInfo {
-	top: 5px;
-	left: 140px;
+	top: 10px;
+	left: 160px;
+}
+
+#errorInfo {
+	top: 10px;
+	left: 10px;
 }
 
 .foundation {
@@ -288,11 +309,6 @@ body {
 
 
 
-
-
-
-
-
 @media only screen and (min-width: 670px) {
 
 body {
@@ -307,9 +323,19 @@ body {
 	font-size: 20px;
 }
 
+#newGame {
+	top: 20px;
+	left: 19px;
+}
+
 #shareInfo {
-	top: 25px;
+	top: 20px;
 	left: 301px;
+}
+
+#errorInfo {
+	top: 20px;
+	left: 19px;
 }
 
 #stack {
