@@ -588,7 +588,7 @@ module.exports = function() {
 				return null;
 			}
 			
-			players[pinfo.id].name = pinfo.name;
+			players[pinfo.id].name = pinfo.name.replace(/<\/?[^>]+(>|$)/g, "");
 			
 			var bases = [];
 			var foundations = [];
